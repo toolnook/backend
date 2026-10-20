@@ -1,0 +1,71 @@
+# Streamline API Gateway — Example Configuration
+#
+# Copy this file to config.yaml and edit for your environment.
+
+port: 8080
+host: 0.0.0.0
+logging: true
+
+# Global rate limit applied to all routes
+globalRateLimit:
+  capacity: 100
+  refillRate: 50
+
+# Health check and metrics endpoints
+healthCheckPath: /health
+metricsPath: /metrics
+
+routes:
+  # User service — prefix match, rate limited, circuit breaker enabled
+  - id: users
+    path: /api/users
+    pathPrefix: true
+    methods: [GET, POST, PUT, DELETE]
+    upstreams:
+      - name: user-service-primary
+        url: http://localhost:3001
+        timeout: 10000
+        retries: 2
+      - name: user-service-secondary
+        url: http://localhost:3011
+    rateLimit:
+      capacity: 20
+      refillRate: 10
+      key: ip
+    circuitBreaker:
+      threshold: 5
+      resetTimeout: 30000
+      failureStatuses: [500, 502, 503, 504]
+    logging: true
+
+  # Order service — exact path match only
+  - id: orders
+    path: /api/orders
+    pathPrefix: false
+    methods: [GET, POST]
+    upstreams:
+      - name: order-service
+        url: http://localhost:3002
+    circuitBreaker:
+      threshold: 3
+      resetTimeout: 15000
+
+  # Internal API — header-based routing (requires X-Internal-Key)
+  - id: internal
+    path: /internal
+    pathPrefix: true
+    headers:
+      - name: X-Internal-Key
+        value: secret-key
+    upstreams:
+      - name: internal-service
+        url: http://localhost:4000
+    logging: true
+
+  # Public health proxy — no rate limit, no circuit breaker
+  - id: public-status
+    path: /status
+    pathPrefix: true
+    upstreams:
+      - name: status-page
+        url: http://localhost:5000
