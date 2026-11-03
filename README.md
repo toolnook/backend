@@ -21,7 +21,7 @@ Most API gateways (Kong, Traefik, Tyk) are powerful but heavy — they require a
 
 ```bash
 # Clone and install
-git clone https://github.com/crafstack/streamline.git
+git clone https://github.com/toolnook/streamline.git
 cd streamline
 npm install
 
