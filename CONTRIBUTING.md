@@ -5,7 +5,7 @@ Thanks for your interest in improving Streamline! This guide covers the developm
 ## Getting started
 
 ```bash
-git clone https://github.com/toolnook/streamline.git
+git clone https://github.com/toolnook/backend.git
 cd streamline
 npm install
 npm run build
