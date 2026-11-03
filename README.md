@@ -1,25 +1,24 @@
-# Toolnook Backend
+# Toolnook Backend — Stellar Horizon Gateway
 
-The API gateway and reverse proxy for the Toolnook platform. A lightweight, self-hostable service for routing requests to microservices with rate limiting, circuit breaking, and Prometheus metrics.
+A rate-limiting, caching, and circuit-breaking gateway for the Stellar Horizon API. Built to help developers and applications access Stellar network data reliably without hitting rate limits or cascading failures when Horizon is degraded.
 
-Part of the [Toolnook](https://github.com/toolnook) open-source developer infrastructure platform:
+Part of the [Toolnook](https://github.com/toolnook) Stellar developer tooling platform:
 
 | Repo | Role |
 |------|------|
-| **toolnook/backend** | API gateway, reverse proxy, rate limiting, circuit breaker |
-| [toolnook/frontend](https://github.com/toolnook/frontend) | Documentation-as-code generator with dependency graphs |
-| [toolnook/contracts](https://github.com/toolnook/contracts) | Double-entry accounting CLI with project profitability |
+| **toolnook/backend** | Horizon gateway with caching, rate limiting, circuit breaker |
+| [toolnook/frontend](https://github.com/toolnook/frontend) | Soroban contract documentation generator |
+| [toolnook/contracts](https://github.com/toolnook/contracts) | XLM payment reconciliation and double-entry ledger |
 
-## What it does
+## Why this helps Stellar
 
-Toolnook Backend sits in front of your services and:
+The Stellar Horizon API enforces rate limits. Applications that query account balances, transaction history, or ledger data frequently will hit 429s. Toolnook Backend sits in front of Horizon and:
 
-- **Routes** incoming HTTP requests to the right upstream based on path, method, and headers
-- **Rate-limits** requests per route using a token-bucket algorithm
-- **Protects** upstream services with a circuit breaker that trips on repeated failures
-- **Logs** every request as structured JSON
-- **Exposes** a Prometheus-format metrics endpoint
-- **Hot-reloads** its YAML configuration without restarting
+- **Caches** idempotent GET responses (account details, ledgers, transactions) to reduce load on Horizon
+- **Rate-limits** outgoing requests so your app stays under Horizon's limits
+- **Circuit-breaks** when Horizon returns repeated 5xx errors, preventing cascading failures
+- **Validates** Stellar network passphrases (public vs testnet) to prevent cross-network mistakes
+- **Exposes** Prometheus metrics so you can monitor Horizon API usage
 
 ## Quick start
 
@@ -35,59 +34,72 @@ npm start
 
 ```yaml
 port: 8080
+stellar:
+  network: public        # or testnet
+  horizonUrl: https://horizon.stellar.org
+  cacheTtl: 10000         # cache responses for 10 seconds
+
 routes:
-  - id: users
-    path: /api/users
+  - id: horizon
+    path: /
+    pathPrefix: true
     upstreams:
-      - name: user-service
-        url: http://localhost:3001
+      - name: stellar-horizon
+        url: https://horizon.stellar.org
     rateLimit:
-      capacity: 20
-      refillRate: 10
+      capacity: 100       # 100 requests per
+      refillRate: 50       # 50 per second (stays under Horizon limits)
     circuitBreaker:
-      threshold: 5
+      threshold: 5        # trip after 5 consecutive 5xx
       resetTimeout: 30000
+
+  - id: soroban
+    path: /soroban
+    pathPrefix: true
+    upstreams:
+      - name: soroban-rpc
+        url: https://soroban-rpc.stellar.org
+    circuitBreaker:
+      threshold: 3
+      resetTimeout: 15000
 ```
 
-See [`config.example.yaml`](config.example.yaml) for a full example.
+## Stellar-specific modules
 
-## Endpoints
+| Module | File | What it does |
+|--------|------|-------------|
+| Horizon client | `src/stellar/horizon.ts` | Cached Horizon API calls with network passphrase validation |
+| Network config | `src/stellar/network.ts` | Public/testnet URL resolution and health checking |
+| Rate limiter | `src/rateLimiter.ts` | Token bucket to stay under Horizon limits |
+| Circuit breaker | `src/circuitBreaker.ts` | Protects against Horizon 5xx cascades |
+| Metrics | `src/metrics.ts` | Prometheus metrics for monitoring Horizon usage |
 
-| Path | Description |
-|------|-------------|
-| `GET /health` | Gateway health with per-route circuit states |
-| `GET /metrics` | Prometheus-format metrics |
+## Horizon client
 
-## Architecture
+```typescript
+import { HorizonClient } from './src/stellar/horizon';
 
+const client = new HorizonClient({
+  baseUrl: 'https://horizon.stellar.org',
+  network: 'public',
+  cacheTtl: 10000,
+});
+
+// Cached account lookup
+const account = await client.getAccount('GABC...');
+
+// Latest ledger
+const ledger = await client.getLatestLedger();
+
+// Payment history (paginated)
+const { payments, nextCursor } = await client.getPayments('GABC...');
 ```
-Request → Router → Rate Limiter → Circuit Breaker → Proxy → Upstream
-                                                        ↓
-                                              Logger + Metrics
-```
-
-| Module | File | Responsibility |
-|--------|------|----------------|
-| Config | `src/config.ts` | YAML parsing and validation |
-| Router | `src/router.ts` | Path/header/method matching |
-| Rate limiter | `src/rateLimiter.ts` | Token-bucket algorithm |
-| Circuit breaker | `src/circuitBreaker.ts` | Closed → open → half-open state machine |
-| Proxy | `src/proxy.ts` | HTTP reverse proxy with round-robin |
-| Metrics | `src/metrics.ts` | Prometheus-format metrics |
-| Server | `src/server.ts` | Full request pipeline |
 
 ## Running tests
 
 ```bash
 npm test
 ```
-
-## Roadmap
-
-- [ ] TLS termination
-- [ ] Request/response transformation
-- [ ] WebSocket support
-- [ ] Distributed rate limiting (Redis)
 
 ## License
 

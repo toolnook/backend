@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toolnook Backend — API Gateway</title>
+<title>Toolnook Backend — Stellar Horizon Gateway</title>
 <style>
-:root{--bg:#0f0f17;--card:#1a1a2e;--accent:#6366f1;--accent2:#8b5cf6;--fg:#e2e8f0;--muted:#94a3b8;--border:#2d2d44}
+:root{--bg:#0f0f17;--card:#1a1a2e;--accent:#6366f1;--accent2:#8b5cf6;--fg:#e2e8f0;--muted:#94a3b8;--border:#2d2d44;--stellar:#7d5cff}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
 nav{display:flex;justify-content:space-between;align-items:center;padding:16px 40px;border-bottom:1px solid var(--border)}
-.logo{font-weight:700;font-size:1.2rem;color:var(--accent2)}
+.logo{font-weight:700;font-size:1.2rem;color:var(--stellar)}
 .nav-links a{color:var(--muted);text-decoration:none;margin-left:24px;font-size:.9rem}
 .nav-links a:hover{color:var(--fg)}
 .hero{text-align:center;padding:80px 20px;max-width:800px;margin:0 auto}
-.hero h1{font-size:2.8rem;margin-bottom:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1{font-size:2.8rem;margin-bottom:16px;background:linear-gradient(135deg,var(--accent),var(--stellar));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{color:var(--muted);font-size:1.2rem;margin-bottom:32px}
-.badge{display:inline-block;padding:4px 12px;border-radius:6px;background:var(--card);color:var(--accent2);font-size:.85rem;border:1px solid var(--border);margin:0 4px}
+.badge{display:inline-block;padding:4px 12px;border-radius:6px;background:var(--card);color:var(--stellar);font-size:.85rem;border:1px solid var(--border);margin:0 4px}
 .ecosystem{display:flex;gap:16px;justify-content:center;margin-bottom:40px;flex-wrap:wrap}
 .eco-card{background:var(--card);padding:16px 24px;border-radius:10px;border:1px solid var(--border);width:200px;text-align:left;text-decoration:none;color:var(--fg);transition:border-color .2s}
-.eco-card.active{border-color:var(--accent)}
+.eco-card.active{border-color:var(--stellar)}
 .eco-card:hover{border-color:var(--accent2)}
 .eco-card h3{font-size:1rem;margin-bottom:4px}
 .eco-card p{font-size:.8rem;color:var(--muted)}
@@ -26,56 +26,48 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:16px 4
 .section h2{font-size:1.6rem;margin-bottom:20px;color:var(--fg)}
 .features{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 .feature{background:var(--card);padding:20px;border-radius:10px;border:1px solid var(--border)}
-.feature h3{font-size:1rem;color:var(--accent2);margin-bottom:8px}
+.feature h3{font-size:1rem;color:var(--stellar);margin-bottom:8px}
 .feature p{font-size:.85rem;color:var(--muted)}
 pre{background:var(--card);padding:16px;border-radius:8px;overflow-x:auto;border:1px solid var(--border);font-size:.85rem}
 code{font-family:'Fira Code',monospace}
-table{width:100%;border-collapse:collapse;margin:16px 0}
-th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);font-size:.9rem}
-th{color:var(--accent2)}
 footer{text-align:center;padding:40px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);margin-top:40px}
 </style>
 </head>
 <body>
 <nav>
-<div class="logo">⬡ toolnook</div>
+<div class="logo">✦ toolnook — built for Stellar</div>
 <div class="nav-links">
 <a href="https://github.com/toolnook/backend">GitHub</a>
 <a href="https://github.com/toolnook/frontend">Frontend</a>
 <a href="https://github.com/toolnook/contracts">Contracts</a>
 </div>
 </nav>
-
 <div class="hero">
-<h1>Toolnook Backend</h1>
-<p>A lightweight, self-hosted API gateway and reverse proxy for microservices. Rate limiting, circuit breaking, and Prometheus metrics in one process.</p>
+<h1>Stellar Horizon Gateway</h1>
+<p>A rate-limiting, caching, and circuit-breaking gateway for the Stellar Horizon API. Helps applications access Stellar network data reliably without hitting rate limits or cascading failures.</p>
 <div>
 <span class="badge">TypeScript</span>
-<span class="badge">Node.js 18+</span>
+<span class="badge">Stellar Horizon</span>
+<span class="badge">Soroban RPC</span>
 <span class="badge">MIT License</span>
 </div>
 </div>
-
 <div class="ecosystem">
-<a href="https://github.com/toolnook/backend" class="eco-card active"><h3>⬡ Backend</h3><p>API gateway & proxy</p></a>
-<a href="https://github.com/toolnook/frontend" class="eco-card"><h3>⬡ Frontend</h3><p>Documentation generator</p></a>
-<a href="https://github.com/toolnook/contracts" class="eco-card"><h3>⬡ Contracts</h3><p>Double-entry accounting</p></a>
+<a href="https://github.com/toolnook/backend" class="eco-card active"><h3>✦ Backend</h3><p>Horizon gateway & cache</p></a>
+<a href="https://github.com/toolnook/frontend" class="eco-card"><h3>✦ Frontend</h3><p>Soroban contract docs</p></a>
+<a href="https://github.com/toolnook/contracts" class="eco-card"><h3>✦ Contracts</h3><p>XLM payment ledger</p></a>
 </div>
-
 <div class="section">
-<h2>Features</h2>
+<h2>Why it helps Stellar</h2>
 <div class="features">
-<div class="feature"><h3>Route Matching</h3><p>Path-prefix, exact path, header-based, and HTTP method matching</p></div>
-<div class="feature"><h3>Rate Limiting</h3><p>Token-bucket algorithm with per-route and global limits</p></div>
-<div class="feature"><h3>Circuit Breaker</h3><p>Closed → open → half-open state machine protecting upstreams</p></div>
-<div class="feature"><h3>Round-Robin Proxy</h3><p>Load balancing across multiple upstreams with retry support</p></div>
-<div class="feature"><h3>Structured Logging</h3><p>JSON log output for every request, configurable log levels</p></div>
-<div class="feature"><h3>Prometheus Metrics</h3><p>Request counts, response times (avg/p50/p99), circuit states</p></div>
-<div class="feature"><h3>Hot Reload</h3><p>Config file changes detected and applied without restart</p></div>
-<div class="feature"><h3>Graceful Shutdown</h3><p>Clean SIGINT/SIGTERM handling with connection draining</p></div>
+<div class="feature"><h3>Horizon Caching</h3><p>Caches idempotent GET responses (accounts, ledgers, transactions) to reduce load on Horizon</p></div>
+<div class="feature"><h3>Rate Limiting</h3><p>Token-bucket algorithm keeps your app under Horizon's rate limits</p></div>
+<div class="feature"><h3>Circuit Breaker</h3><p>Trips on repeated Horizon 5xx errors to prevent cascading failures</p></div>
+<div class="feature"><h3>Network Validation</h3><p>Validates public vs testnet passphrases to prevent cross-network mistakes</p></div>
+<div class="feature"><h3>Prometheus Metrics</h3><p>Monitor Horizon API usage with request counts and response times</p></div>
+<div class="feature"><h3>Soroban Support</h3><p>Route to Soroban RPC with separate circuit breaker configuration</p></div>
 </div>
 </div>
-
 <div class="section">
 <h2>Quick Start</h2>
 <pre><code>git clone https://github.com/toolnook/backend.git
@@ -84,33 +76,40 @@ npm install
 cp config.example.yaml config.yaml
 npm start</code></pre>
 </div>
-
 <div class="section">
 <h2>Configuration</h2>
 <pre><code>port: 8080
+stellar:
+  network: public
+  horizonUrl: https://horizon.stellar.org
+
 routes:
-  - id: users
-    path: /api/users
+  - id: horizon
+    path: /
     upstreams:
-      - name: user-service
-        url: http://localhost:3001
+      - name: stellar-horizon
+        url: https://horizon.stellar.org
     rateLimit:
-      capacity: 20
-      refillRate: 10
+      capacity: 100
+      refillRate: 50
     circuitBreaker:
       threshold: 5
       resetTimeout: 30000</code></pre>
 </div>
-
 <div class="section">
-<h2>Endpoints</h2>
-<table>
-<tr><th>Path</th><th>Description</th></tr>
-<tr><td><code>GET /health</code></td><td>Gateway health with per-route circuit states</td></tr>
-<tr><td><code>GET /metrics</code></td><td>Prometheus-format metrics</td></tr>
-</table>
-</div>
+<h2>Horizon Client API</h2>
+<pre><code>import { HorizonClient } from './src/stellar/horizon';
 
-<footer>Toolnook Backend v0.1.0 — <a href="https://github.com/toolnook/backend" style="color:var(--accent2)">GitHub</a> — MIT License</footer>
+const client = new HorizonClient({
+  baseUrl: 'https://horizon.stellar.org',
+  network: 'public',
+  cacheTtl: 10000,
+});
+
+const account = await client.getAccount('GABC...');
+const ledger = await client.getLatestLedger();
+const { payments } = await client.getPayments('GABC...');</code></pre>
+</div>
+<footer>Toolnook Backend v0.1.0 — Built for the Stellar network — <a href="https://github.com/toolnook/backend" style="color:var(--stellar)">GitHub</a> — MIT License</footer>
 </body>
 </html>

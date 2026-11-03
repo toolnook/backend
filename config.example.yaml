@@ -1,36 +1,39 @@
-# Streamline API Gateway — Example Configuration
+# Toolnook Backend — Stellar Horizon Gateway Configuration
 #
-# Copy this file to config.yaml and edit for your environment.
+# Copy to config.yaml and edit for your environment.
 
 port: 8080
 host: 0.0.0.0
 logging: true
 
-# Global rate limit applied to all routes
+# Stellar network configuration
+stellar:
+  network: public              # public or testnet
+  horizonUrl: https://horizon.stellar.org
+  sorobanUrl: https://soroban-rpc.stellar.org
+  cacheTtl: 10000              # cache Horizon GET responses for 10 seconds
+
+# Global rate limit — keep under Horizon's limits
 globalRateLimit:
   capacity: 100
   refillRate: 50
 
-# Health check and metrics endpoints
 healthCheckPath: /health
 metricsPath: /metrics
 
 routes:
-  # User service — prefix match, rate limited, circuit breaker enabled
-  - id: users
-    path: /api/users
+  # Stellar Horizon — proxy with rate limiting and circuit breaker
+  - id: horizon
+    path: /
     pathPrefix: true
-    methods: [GET, POST, PUT, DELETE]
+    methods: [GET]
     upstreams:
-      - name: user-service-primary
-        url: http://localhost:3001
-        timeout: 10000
-        retries: 2
-      - name: user-service-secondary
-        url: http://localhost:3011
+      - name: stellar-horizon
+        url: https://horizon.stellar.org
+        timeout: 30000
     rateLimit:
-      capacity: 20
-      refillRate: 10
+      capacity: 50
+      refillRate: 25
       key: ip
     circuitBreaker:
       threshold: 5
@@ -38,34 +41,25 @@ routes:
       failureStatuses: [500, 502, 503, 504]
     logging: true
 
-  # Order service — exact path match only
-  - id: orders
-    path: /api/orders
-    pathPrefix: false
-    methods: [GET, POST]
+  # Soroban RPC — separate circuit breaker for smart contract calls
+  - id: soroban
+    path: /soroban
+    pathPrefix: true
+    methods: [POST]
     upstreams:
-      - name: order-service
-        url: http://localhost:3002
+      - name: soroban-rpc
+        url: https://soroban-rpc.stellar.org
     circuitBreaker:
       threshold: 3
       resetTimeout: 15000
 
-  # Internal API — header-based routing (requires X-Internal-Key)
-  - id: internal
-    path: /internal
-    pathPrefix: true
-    headers:
-      - name: X-Internal-Key
-        value: secret-key
-    upstreams:
-      - name: internal-service
-        url: http://localhost:4000
-    logging: true
-
-  # Public health proxy — no rate limit, no circuit breaker
-  - id: public-status
-    path: /status
+  # Local Horizon instance (for development)
+  - id: local-horizon
+    path: /local
     pathPrefix: true
     upstreams:
-      - name: status-page
-        url: http://localhost:5000
+      - name: local-horizon
+        url: http://localhost:8000
+    rateLimit:
+      capacity: 100
+      refillRate: 50
