@@ -22,4 +22,4 @@ All notable changes to Streamline are documented here. The format follows [Keep 
 - Example configuration file
 - Issue templates and PR template
 
-[0.1.0]: https://github.com/forgekit/streamline/releases/tag/v0.1.0
+[0.1.0]: https://github.com/crafstack/streamline/releases/tag/v0.1.0
