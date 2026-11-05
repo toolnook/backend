@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="216" height="56" viewBox="0 0 216 56" role="img" aria-labelledby="title">
+  <title id="title">Toolnook</title>
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#635bff"/>
+      <stop offset="1" stop-color="#16b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="4" width="48" height="48" rx="15" fill="url(#brand)"/>
+  <path d="M26 11 29.8 22.2 41 26l-11.2 3.8L26 41l-3.8-11.2L11 26l11.2-3.8L26 11Z" fill="#fff"/>
+  <circle cx="40" cy="12" r="2" fill="#fff" opacity=".85"/>
+  <text x="62" y="36" fill="#17213a" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="-1">toolnook</text>
+</svg>
