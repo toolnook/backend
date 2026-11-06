@@ -64,7 +64,7 @@ describe('GatewayServer (integration)', () => {
     await gateway.listen();
 
     const gwPort = (gateway as any).server?.address()?.port;
-    const response = await fetch(`http://localhost:${gwPort}/api/test`);
+    const response = await fetch(`http://127.0.0.1:${gwPort}/api/test`);
     const body = await response.json() as Record<string, unknown>;
 
     expect(response.status).toBe(200);
@@ -82,7 +82,7 @@ describe('GatewayServer (integration)', () => {
     await gateway.listen();
 
     const gwPort = (gateway as any).server?.address()?.port;
-    const response = await fetch(`http://localhost:${gwPort}/unknown`);
+    const response = await fetch(`http://127.0.0.1:${gwPort}/unknown`);
 
     expect(response.status).toBe(404);
   });
@@ -97,7 +97,7 @@ describe('GatewayServer (integration)', () => {
     await gateway.listen();
 
     const gwPort = (gateway as any).server?.address()?.port;
-    const response = await fetch(`http://localhost:${gwPort}/health`);
+    const response = await fetch(`http://127.0.0.1:${gwPort}/health`);
     const body = await response.json() as Record<string, unknown>;
 
     expect(response.status).toBe(200);
@@ -116,8 +116,8 @@ describe('GatewayServer (integration)', () => {
 
     const gwPort = (gateway as any).server?.address()?.port;
     // Make a request first so metrics are non-empty
-    await fetch(`http://localhost:${gwPort}/api/test`);
-    const response = await fetch(`http://localhost:${gwPort}/metrics`);
+    await fetch(`http://127.0.0.1:${gwPort}/api/test`);
+    const response = await fetch(`http://127.0.0.1:${gwPort}/metrics`);
     const body = await response.text();
 
     expect(response.status).toBe(200);
@@ -135,8 +135,8 @@ describe('GatewayServer (integration)', () => {
     await gateway.listen();
 
     const gwPort = (gateway as any).server?.address()?.port;
-    const r1 = await fetch(`http://localhost:${gwPort}/api/test`);
-    const r2 = await fetch(`http://localhost:${gwPort}/api/test`);
+    const r1 = await fetch(`http://127.0.0.1:${gwPort}/api/test`);
+    const r2 = await fetch(`http://127.0.0.1:${gwPort}/api/test`);
 
     expect(r1.status).toBe(200);
     expect(r2.status).toBe(429);
