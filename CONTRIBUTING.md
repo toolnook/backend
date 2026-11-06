@@ -1,13 +1,13 @@
-# Contributing to Streamline
+# Contributing to Toolnook Backend
 
-Thanks for your interest in improving Streamline! This guide covers the development workflow.
+Thanks for your interest in improving Toolnook Backend! This guide covers the development workflow.
 
 ## Getting started
 
 ```bash
 git clone https://github.com/toolnook/backend.git
-cd streamline
-npm install
+cd backend
+npm ci
 npm run build
 npm test
 ```
@@ -56,7 +56,7 @@ npm test
 
 - Use the bug report template for bugs.
 - Use the feature request template for new features.
-- Include the Streamline version, Node.js version, and a minimal config that reproduces the issue.
+- Include the Toolnook Backend version, Node.js version, and a minimal config that reproduces the issue.
 
 ## Pull request checklist
 
